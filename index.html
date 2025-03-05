@@ -68,7 +68,7 @@
 <body>
     <h1>Quran Explorer</h1>
     <div id="search-container">
-        <input type="text" id="search-input" placeholder="Enter verse (e.g., 1:1)">
+        <input type="text" id="search-input" placeholder="Enter verse (e.g., 1:1) or Surah (e.g. 2)">
         <button id="search-button" onclick="searchVerse()">Search</button>
     </div>
     <div id="result-container"></div>
@@ -80,17 +80,36 @@
             resultContainer.innerHTML = "Loading...";
 
             try {
-                const response = await fetch(`https://api.alquran.cloud/v1/ayah/${verseInput}/en.sahih`); // Changed to Saheeh International
-                const data = await response.json();
+                if (/^\d+$/.test(verseInput)) { // Check if it's only a number (Surah)
+                    const surahResponse = await fetch(`https://api.alquran.cloud/v1/surah/${verseInput}/en.sahih`);
+                    const surahData = await surahResponse.json();
 
-                if (data.data) {
-                    const verse = data.data;
-                    resultContainer.innerHTML = `
-                        <div class="arabic-text">${verse.text}</div>
-                        <div class="translation">${verse.translation}</div>
-                    `;
-                } else {
-                    resultContainer.innerHTML = "Verse not found.";
+                    if (surahData.data && surahData.data.ayahs) {
+                        let surahHtml = "";
+                        surahData.data.ayahs.forEach(ayah => {
+                            surahHtml += `
+                                <div class="arabic-text">${ayah.text}</div>
+                                <div class="translation">${ayah.translation}</div>
+                                <hr>
+                            `;
+                        });
+                        resultContainer.innerHTML = surahHtml;
+                    } else {
+                        resultContainer.innerHTML = "Surah not found.";
+                    }
+                } else { // It's a verse (e.g., 1:1)
+                    const verseResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${verseInput}/en.sahih`);
+                    const verseData = await verseResponse.json();
+
+                    if (verseData.data) {
+                        const verse = verseData.data;
+                        resultContainer.innerHTML = `
+                            <div class="arabic-text">${verse.text}</div>
+                            <div class="translation">${verse.translation}</div>
+                        `;
+                    } else {
+                        resultContainer.innerHTML = "Verse not found.";
+                    }
                 }
             } catch (error) {
                 resultContainer.innerHTML = "An error occurred.";
