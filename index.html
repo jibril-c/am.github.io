@@ -3,120 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran Explorer</title>
+    <title>Quran Tafseer AI</title>
     <style>
-        body {
-            font-family: 'Scheherazade New', serif;
-            background: linear-gradient(to bottom, #f0f8ff, #e0ffff);
-            color: #333;
-            margin: 0;
-            text-align: center;
-        }
-
-        h1 {
-            color: #191970;
-            margin-top: 20px;
-        }
-
-        #search-container {
-            margin: 20px auto;
-            max-width: 600px;
-        }
-
-        #search-input {
-            padding: 10px;
-            width: 70%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #search-button {
-            padding: 10px 20px;
-            background-color: #4682b4;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #result-container {
-            margin: 20px auto;
-            max-width: 800px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: right; /* Set the default text alignment to right */
-        }
-
-        .arabic-text {
-            font-size: 2em;
-            color: #006400;
-            margin-bottom: 10px;
-            direction: rtl; /* Force right-to-left direction */
-            unicode-bidi: bidi-override; /* helps with proper display*/
-        }
-
-        .translation {
-            font-style: italic;
-            color: #808080;
-            direction: ltr; /* force left to right direction for english */
-        }
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { text-align: center; color: #333; }
+        select, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 16px; border-radius: 5px; }
+        #aiExplanation { margin-top: 20px; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9; }
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Quran Explorer</h1>
-    <div id="search-container">
-        <input type="text" id="search-input" placeholder="Enter verse (e.g., 1:1) or Surah (e.g. 2)">
-        <button id="search-button" onclick="searchVerse()">Search</button>
-    </div>
-    <div id="result-container"></div>
+
+    <h1>AI Quran Tafseer</h1>
+
+    <select id="verseSelector">
+        <option value="Al-Fatiha_1">Surah Al-Fatiha, Ayah 1</option>
+        <option value="Al-Fatiha_2">Surah Al-Fatiha, Ayah 2</option>
+        <option value="Al-Baqarah_255">Surah Al-Baqarah, Ayah 255 (Ayat-ul-Kursi)</option>
+    </select>
+
+    <button onclick="generateAIExplanation()">Get AI Explanation</button>
+
+    <div id="aiExplanation"></div>
 
     <script>
-        async function searchVerse() {
-            const verseInput = document.getElementById('search-input').value;
-            const resultContainer = document.getElementById('result-container');
-            resultContainer.innerHTML = "Loading...";
-
-            try {
-                if (/^\d+$/.test(verseInput)) {
-                    const surahResponse = await fetch(`https://api.alquran.cloud/v1/surah/${verseInput}/en.sahih`);
-                    const surahData = await surahResponse.json();
-
-                    if (surahData.data && surahData.data.ayahs) {
-                        let surahHtml = "";
-                        surahData.data.ayahs.forEach(ayah => {
-                            surahHtml += `
-                                <div class="arabic-text">${ayah.text}</div>
-                                <div class="translation">${ayah.translation}</div>
-                                <hr>
-                            `;
-                        });
-                        resultContainer.innerHTML = surahHtml;
-                    } else {
-                        resultContainer.innerHTML = "Surah not found.";
-                    }
-                } else {
-                    const verseResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${verseInput}/en.sahih`);
-                    const verseData = await verseResponse.json();
-
-                    if (verseData.data) {
-                        const verse = verseData.data;
-                        resultContainer.innerHTML = `
-                            <div class="arabic-text">${verse.text}</div>
-                            <div class="translation">${verse.translation}</div>
-                        `;
-                    } else {
-                        resultContainer.innerHTML = "Verse not found.";
-                    }
+        // Quran verses and Tafseers stored in a JavaScript object
+        const quranData = {
+            "Al-Fatiha": {
+                "1": {
+                    "verse": "In the name of Allah, the Most Gracious, the Most Merciful.",
+                    "tafseer": "This verse emphasizes the importance of beginning every action with the name of Allah, seeking His blessings."
+                },
+                "2": {
+                    "verse": "Praise be to Allah, the Lord of all the worlds.",
+                    "tafseer": "This verse acknowledges Allah as the Creator and Sustainer of all creation."
                 }
-            } catch (error) {
-                resultContainer.innerHTML = "An error occurred.";
+            },
+            "Al-Baqarah": {
+                "255": {
+                    "verse": "Allah! There is no deity except Him, the Ever-Living, the Sustainer of existence.",
+                    "tafseer": "Ayat-ul-Kursi highlights the majesty and uniqueness of Allah. It emphasizes that He is the eternal, self-sustaining God, beyond the comprehension of His creation."
+                }
             }
+        };
+
+        // Function to generate the AI explanation
+        async function generateAIExplanation() {
+            const verse = document.getElementById('verseSelector').value;
+            const [surah, ayah] = verse.split('_'); // Split the selected verse into Surah and Ayah parts
+            const verseData = quranData[surah][ayah]; // Fetch the verse and Tafseer
+
+            // Send request to backend (Node.js server)
+            const response = await fetch('http://localhost:3000/get-ai-explanation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    verse: verseData.verse,
+                    tafseer: verseData.tafseer,
+                }),
+            });
+
+            const data = await response.json();
+            document.getElementById('aiExplanation').innerText = data.explanation;
         }
     </script>
+
 </body>
 </html>
