@@ -52,20 +52,22 @@
             const [surah, ayah] = verse.split('_'); // Split the selected verse into Surah and Ayah parts
             const verseData = quranData[surah][ayah]; // Fetch the verse and Tafseer
 
-            // Send request to backend (Node.js server)
-            const response = await fetch('http://localhost:3000/get-ai-explanation', {
+            // Call to OpenAI API with the provided API key
+            const response = await fetch('https://api.openai.com/v1/completions', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer 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`,  // Use your provided API key
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    verse: verseData.verse,
-                    tafseer: verseData.tafseer,
-                }),
+                    model: "text-davinci-003",
+                    prompt: `Explain the following Quran verse and its tafseer:\n\nVerse: ${verseData.verse}\nTafseer: ${verseData.tafseer}`,
+                    max_tokens: 100
+                })
             });
 
             const data = await response.json();
-            document.getElementById('aiExplanation').innerText = data.explanation;
+            document.getElementById('aiExplanation').innerText = data.choices[0].text.trim();
         }
     </script>
 
