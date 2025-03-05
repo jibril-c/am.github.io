@@ -46,19 +46,21 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: right;
-            direction: rtl;
+            text-align: right; /* Set the default text alignment to right */
         }
 
         .arabic-text {
             font-size: 2em;
             color: #006400;
             margin-bottom: 10px;
+            direction: rtl; /* Force right-to-left direction */
+            unicode-bidi: bidi-override; /* helps with proper display*/
         }
 
         .translation {
             font-style: italic;
             color: #808080;
+            direction: ltr; /* force left to right direction for english */
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,7 +82,7 @@
             resultContainer.innerHTML = "Loading...";
 
             try {
-                if (/^\d+$/.test(verseInput)) { // Check if it's only a number (Surah)
+                if (/^\d+$/.test(verseInput)) {
                     const surahResponse = await fetch(`https://api.alquran.cloud/v1/surah/${verseInput}/en.sahih`);
                     const surahData = await surahResponse.json();
 
@@ -97,7 +99,7 @@
                     } else {
                         resultContainer.innerHTML = "Surah not found.";
                     }
-                } else { // It's a verse (e.g., 1:1)
+                } else {
                     const verseResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${verseInput}/en.sahih`);
                     const verseData = await verseResponse.json();
 
