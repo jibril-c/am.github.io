@@ -3,73 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran Tafseer AI</title>
+    <title>Science Exploration</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        h1 { text-align: center; color: #333; }
-        select, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 16px; border-radius: 5px; }
-        #aiExplanation { margin-top: 20px; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9; }
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        nav {
+            text-align: center;
+            background-color: #333;
+            padding: 10px 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 1.1em;
+        }
+        nav a:hover {
+            background-color: #4CAF50;
+            border-radius: 5px;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Science Themes Styling */
+        .space { background-color: #1f1f1f; color: white; padding: 20px; border-radius: 10px; }
+        .biology { background-color: #7bbf7b; color: white; padding: 20px; border-radius: 10px; }
+        .physics { background-color: #4444ff; color: white; padding: 20px; border-radius: 10px; }
+        .earth { background-color: #58a5d8; color: white; padding: 20px; border-radius: 10px; }
+        .technology { background-color: #4b4b4b; color: white; padding: 20px; border-radius: 10px; }
+
+        /* Unique Art Style */
+        .science-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .art {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
     </style>
 </head>
 <body>
 
-    <h1>AI Quran Tafseer</h1>
+    <header>
+        <h1>Welcome to the Science Exploration</h1>
+        <p>Explore different scientific fields with us!</p>
+    </header>
 
-    <select id="verseSelector">
-        <option value="Al-Fatiha_1">Surah Al-Fatiha, Ayah 1</option>
-        <option value="Al-Fatiha_2">Surah Al-Fatiha, Ayah 2</option>
-        <option value="Al-Baqarah_255">Surah Al-Baqarah, Ayah 255 (Ayat-ul-Kursi)</option>
-    </select>
+    <nav>
+        <a href="#space">Space & Astronomy</a>
+        <a href="#biology">Biology & Genetics</a>
+        <a href="#physics">Physics & Quantum Mechanics</a>
+        <a href="#earth">Earth Science & Geology</a>
+        <a href="#technology">Technology & AI</a>
+    </nav>
 
-    <button onclick="generateAIExplanation()">Get AI Explanation</button>
+    <div class="container">
+        <!-- Space and Astronomy -->
+        <section id="space" class="space">
+            <h2>Space & Astronomy</h2>
+            <p>Space exploration is the physical exploration of outer space, primarily by spaceflight. Humans have sent spacecraft to explore the planets, moons, and other celestial bodies in our Solar System.</p>
+            <img class="science-image art" src="https://via.placeholder.com/1000x400/000000/FFFFFF?text=Space+Art" alt="Space Art">
+        </section>
 
-    <div id="aiExplanation"></div>
+        <!-- Biology and Genetics -->
+        <section id="biology" class="biology">
+            <h2>Biology & Genetics</h2>
+            <p>Biology is the scientific study of life. Genetics, a subfield of biology, studies the genes, heredity, and genetic variation in organisms.</p>
+            <img class="science-image art" src="https://via.placeholder.com/1000x400/228B22/FFFFFF?text=Biology+Art" alt="Biology Art">
+        </section>
 
-    <script>
-        // Quran verses and Tafseers stored in a JavaScript object
-        const quranData = {
-            "Al-Fatiha": {
-                "1": {
-                    "verse": "In the name of Allah, the Most Gracious, the Most Merciful.",
-                    "tafseer": "This verse emphasizes the importance of beginning every action with the name of Allah, seeking His blessings."
-                },
-                "2": {
-                    "verse": "Praise be to Allah, the Lord of all the worlds.",
-                    "tafseer": "This verse acknowledges Allah as the Creator and Sustainer of all creation."
-                }
-            },
-            "Al-Baqarah": {
-                "255": {
-                    "verse": "Allah! There is no deity except Him, the Ever-Living, the Sustainer of existence.",
-                    "tafseer": "Ayat-ul-Kursi highlights the majesty and uniqueness of Allah. It emphasizes that He is the eternal, self-sustaining God, beyond the comprehension of His creation."
-                }
-            }
-        };
+        <!-- Physics and Quantum Mechanics -->
+        <section id="physics" class="physics">
+            <h2>Physics & Quantum Mechanics</h2>
+            <p>Physics is the study of matter, energy, and the fundamental forces of nature. Quantum mechanics is the branch of physics that deals with the behavior of particles on a very small scale.</p>
+            <img class="science-image art" src="https://via.placeholder.com/1000x400/0000FF/FFFFFF?text=Physics+Art" alt="Physics Art">
+        </section>
 
-        // Function to generate the AI explanation
-        async function generateAIExplanation() {
-            const verse = document.getElementById('verseSelector').value;
-            const [surah, ayah] = verse.split('_'); // Split the selected verse into Surah and Ayah parts
-            const verseData = quranData[surah][ayah]; // Fetch the verse and Tafseer
+        <!-- Earth Science and Geology -->
+        <section id="earth" class="earth">
+            <h2>Earth Science & Geology</h2>
+            <p>Earth science is the study of the Earth and its atmosphere, including geology, meteorology, and oceanography. Geology is specifically the study of the Earth’s physical structure and substance.</p>
+            <img class="science-image art" src="https://via.placeholder.com/1000x400/4682B4/FFFFFF?text=Earth+Science+Art" alt="Earth Science Art">
+        </section>
 
-            // Call to OpenAI API (for deeper AI explanation, use your API key here)
-            const response = await fetch('https://api.openai.com/v1/completions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer YOUR_API_KEY`, // Replace with your actual API key
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: "text-davinci-003",
-                    prompt: `Explain the following Quran verse and its tafseer:\n\nVerse: ${verseData.verse}\nTafseer: ${verseData.tafseer}`,
-                    max_tokens: 100
-                })
-            });
+        <!-- Technology and AI -->
+        <section id="technology" class="technology">
+            <h2>Technology & Artificial Intelligence</h2>
+            <p>Technology refers to the application of scientific knowledge for practical purposes. Artificial intelligence (AI) is the simulation of human intelligence processes by machines, especially computer systems.</p>
+            <img class="science-image art" src="https://via.placeholder.com/1000x400/4B0082/FFFFFF?text=Technology+Art" alt="Technology Art">
+        </section>
+    </div>
 
-            const data = await response.json();
-            document.getElementById('aiExplanation').innerText = data.choices[0].text.trim();
-        }
-    </script>
+    <footer>
+        <p>&copy; 2025 Science Exploration. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
