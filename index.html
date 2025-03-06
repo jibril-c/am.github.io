@@ -5,19 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quran Viewer</title>
     <style>
-        /* Reset some styles for consistency */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f9;
             color: #333;
             padding: 20px;
-            text-align: center;
         }
 
         .container {
@@ -186,7 +178,7 @@
             });
         }
 
-        // Fetch the selected verse, its translation, and tafsir
+        // Fetch the selected verse, its translation, recitation, and tafsir
         function loadVerse() {
             currentVerse = $('#verse').val();
             currentTranslation = $('#translation').val();  // Get selected translation
@@ -197,10 +189,11 @@
                 method: 'GET',
                 success: function(response) {
                     let verseData = response.data;
+
                     // Show Arabic verse text
                     $('#verseText').html(`<p><strong>Arabic:</strong> ${verseData.text}</p>`);
 
-                    // Show translation
+                    // Fetch translation
                     $.ajax({
                         url: `https://api.alquran.cloud/v1/ayah/${currentChapter}/${currentVerse}?translation=${currentTranslation}`,
                         method: 'GET',
@@ -212,7 +205,7 @@
                     // Fetch tafsir (explanation)
                     fetchTafsir();
 
-                    // Load audio recitation
+                    // Load recitation
                     loadAudio(currentChapter, currentVerse);
                 }
             });
