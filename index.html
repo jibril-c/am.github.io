@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quran Viewer</title>
     <style>
-        /* Basic Styling for the Page */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -49,13 +48,30 @@
 
         <!-- Dropdowns for Chapter and Verse Selection -->
         <label for="chapter">Select Chapter:</label>
-        <select id="chapter" onchange="loadVerse()">
+        <select id="chapter" onchange="loadVerses()">
             <!-- Options will be added dynamically -->
         </select>
 
         <label for="verse">Select Verse:</label>
         <select id="verse" onchange="loadVerse()">
             <!-- Options will be added dynamically -->
+        </select>
+
+        <!-- Dropdown for Translation Selection -->
+        <label for="translation">Select Translation:</label>
+        <select id="translation" onchange="loadVerse()">
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="ar">Arabic</option>
+            <!-- Add more translations if needed -->
+        </select>
+
+        <!-- Dropdown for Reciter Selection -->
+        <label for="reciter">Select Reciter:</label>
+        <select id="reciter" onchange="loadVerse()">
+            <option value="minshawi">Minshawi</option>
+            <option value="yasser">Yasser Al-Dosari</option>
+            <!-- Add more reciters if needed -->
         </select>
 
         <div class="verse" id="verseText">Select a chapter and verse</div>
@@ -74,6 +90,8 @@
         let quranData = {};  // To store Quran content fetched from the API
         let currentChapter = 1;
         let currentVerse = 1;
+        let currentTranslation = 'en';  // Default to English translation
+        let currentReciter = 'minshawi';  // Default reciter Minshawi
 
         // Fetch chapters (Surah) and load them into the select dropdown
         function loadChapters() {
@@ -112,37 +130,48 @@
         // Fetch the selected verse, its translation, and tafsir
         function loadVerse() {
             currentVerse = $('#verse').val();
+            currentTranslation = $('#translation').val();  // Get selected translation
+            currentReciter = $('#reciter').val();  // Get selected reciter
+
             $.ajax({
-                url: `https://api.alquran.cloud/v1/ayah/${currentChapter}/${currentVerse}`,
+                url: `https://api.alquran.cloud/v1/ayah/${currentChapter}/${currentVerse}?translation=${currentTranslation}`,
                 method: 'GET',
                 success: function(response) {
                     let verseData = response.data;
-                    $('#verseText').text(verseData.text);
-                    $('#translationText').text(verseData.translation.en);
+                    $('#verseText').html(`<p><strong>Arabic:</strong> ${verseData.text}</p>`);  // Quranic verse text in Arabic
+
+                    // Display translation based on selected language
+                    $('#translationText').html(`<p><strong>Translation:</strong> ${verseData.translation[currentTranslation]}</p>`);
 
                     // Fetch tafsir for the selected verse
                     fetchTafsir();
 
                     // Load audio recitation
-                    loadAudio(verseData.number);
+                    loadAudio(currentChapter, currentVerse);
                 }
             });
         }
 
-        // Fetch tafsir for the selected verse
+        // Fetch tafsir (explanation) for the selected verse
         function fetchTafsir() {
             $.ajax({
                 url: `https://api.alquran.cloud/v1/tafsir/${currentChapter}/${currentVerse}`,
                 method: 'GET',
                 success: function(response) {
                     $('#tafsirText').text(response.data.text || "No tafsir available.");
+                },
+                error: function() {
+                    $('#tafsirText').text("Unable to fetch tafsir.");
                 }
             });
         }
 
         // Load audio for the selected verse
-        function loadAudio(verseNumber) {
-            const audioUrl = `https://verses.quran.com/${currentChapter}/${verseNumber}.mp3`;
+        function loadAudio(chapter, verse) {
+            // Correct audio URL for recitation using Quranicaudio.com with the selected reciter
+            const audioUrl = `https://verses.quranicaudio.com/${currentReciter}/${chapter}/${verse}.mp3`;
+
+            // Play the audio when the button is clicked
             $('#audioBtn').off().on('click', function() {
                 const audio = new Audio(audioUrl);
                 audio.play();
@@ -155,3 +184,4 @@
 
 </body>
 </html>
+
