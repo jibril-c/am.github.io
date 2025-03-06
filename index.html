@@ -3,206 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Science Exploration</title>
+    <title>Quran Viewer</title>
     <style>
-        /* Global Styles */
+        /* Basic Styling for the Page */
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             color: #333;
+            padding: 20px;
         }
-
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 3em;
-        }
-
-        nav {
-            text-align: center;
-            background-color: #333;
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 12px 25px;
-            margin: 0 15px;
-            font-size: 1.2em;
-        }
-
-        nav a:hover {
-            background-color: #4CAF50;
-            border-radius: 5px;
-        }
-
         .container {
-            padding: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        footer {
-            background-color: #333;
-            color: white;
+        select, button {
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .verse {
+            font-size: 1.5em;
+            margin-top: 20px;
             text-align: center;
-            padding: 20px 0;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-            font-size: 0.9em;
         }
-
-        /* Hide all sections initially */
-        .page {
-            display: none;
+        .translation {
+            font-size: 1.2em;
+            color: #555;
         }
-
-        /* Show active page */
-        .active {
-            display: block;
-        }
-
-        /* Section Styles */
-        section {
-            padding: 40px;
-            border-radius: 10px;
-            margin: 30px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .space { background-color: #1f1f1f; color: white; }
-        .biology { background-color: #7bbf7b; color: white; }
-        .physics { background-color: #4444ff; color: white; }
-        .earth { background-color: #58a5d8; color: white; }
-        .technology { background-color: #4b4b4b; color: white; }
-
-        /* Art Styling */
-        .art {
-            width: 100%;
-            max-height: 500px;
-            object-fit: cover;
-            border-radius: 15px;
+        .audio {
             margin-top: 20px;
         }
-
-        .section-header {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #fff;
+        .tafsir {
+            margin-top: 20px;
+            font-style: italic;
+            color: #555;
         }
-
-        .section-content {
-            font-size: 1.2em;
-            line-height: 1.6;
-            color: #fff;
-        }
-
-        .section-footer {
-            margin-top: 30px;
-            font-size: 1.1em;
-            color: #ddd;
-        }
-
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
-    <header>
-        <h1>Welcome to the Science Exploration</h1>
-        <p>Delve into the fascinating world of science! Choose a topic and explore its wonders.</p>
-    </header>
-
-    <!-- Navigation Bar -->
-    <nav>
-        <a href="javascript:void(0);" onclick="showPage('space')">Space & Astronomy</a>
-        <a href="javascript:void(0);" onclick="showPage('biology')">Biology & Genetics</a>
-        <a href="javascript:void(0);" onclick="showPage('physics')">Physics & Quantum Mechanics</a>
-        <a href="javascript:void(0);" onclick="showPage('earth')">Earth Science & Geology</a>
-        <a href="javascript:void(0);" onclick="showPage('technology')">Technology & AI</a>
-    </nav>
-
-    <!-- Main Content Section -->
     <div class="container">
-        <!-- Space and Astronomy Page -->
-        <div id="space" class="page space">
-            <h2 class="section-header">Space & Astronomy</h2>
-            <p class="section-content">Space exploration is the investigation of outer space using astronomical science and technology. It has revolutionized our understanding of the universe, from studying planets, stars, and galaxies to the search for extraterrestrial life. Astronomy has unlocked some of the greatest mysteries of the cosmos.</p>
-            <img class="art" src="https://via.placeholder.com/1000x500/000000/FFFFFF?text=Space+Exploration" alt="Space Exploration Art">
-            <p class="section-footer">Space science continues to advance through missions such as the Mars rovers and the James Webb Space Telescope, opening new frontiers in our understanding of space.</p>
+        <h1>Quran Viewer</h1>
+
+        <!-- Dropdowns for Chapter and Verse Selection -->
+        <label for="chapter">Select Chapter:</label>
+        <select id="chapter" onchange="loadVerse()">
+            <!-- Options will be added dynamically -->
+        </select>
+
+        <label for="verse">Select Verse:</label>
+        <select id="verse" onchange="loadVerse()">
+            <!-- Options will be added dynamically -->
+        </select>
+
+        <div class="verse" id="verseText">Select a chapter and verse</div>
+
+        <div class="translation" id="translationText">Translation will appear here</div>
+
+        <div class="audio">
+            <button id="audioBtn">Play Recitation</button>
         </div>
 
-        <!-- Biology and Genetics Page -->
-        <div id="biology" class="page biology">
-            <h2 class="section-header">Biology & Genetics</h2>
-            <p class="section-content">Biology is the scientific study of life and living organisms. It explores the functions, evolution, and structure of organisms, as well as the interactions between them. Genetics, a subfield of biology, focuses on heredity and variation in organisms, studying how traits are passed down from one generation to the next.</p>
-            <img class="art" src="https://via.placeholder.com/1000x500/228B22/FFFFFF?text=Biology+Genetics" alt="Biology and Genetics Art">
-            <p class="section-footer">From understanding DNA to the application of genetic engineering, biology and genetics are shaping the future of medicine and biotechnology.</p>
-        </div>
-
-        <!-- Physics and Quantum Mechanics Page -->
-        <div id="physics" class="page physics">
-            <h2 class="section-header">Physics & Quantum Mechanics</h2>
-            <p class="section-content">Physics seeks to understand the nature of the universe by studying matter, energy, and the fundamental forces of nature. It includes classical mechanics, electromagnetism, and modern physics such as quantum mechanics. Quantum mechanics explains the strange behavior of particles at atomic and subatomic levels.</p>
-            <img class="art" src="https://via.placeholder.com/1000x500/0000FF/FFFFFF?text=Quantum+Mechanics" alt="Quantum Mechanics Art">
-            <p class="section-footer">The discovery of quantum theory has led to groundbreaking technologies such as semiconductors and quantum computing.</p>
-        </div>
-
-        <!-- Earth Science and Geology Page -->
-        <div id="earth" class="page earth">
-            <h2 class="section-header">Earth Science & Geology</h2>
-            <p class="section-content">Earth science is the study of the Earth, its structure, processes, and the history of its development. Geology, a branch of Earth science, examines the Earth's physical composition, including rocks, minerals, and the processes that shape the planet's surface.</p>
-            <img class="art" src="https://via.placeholder.com/1000x500/4682B4/FFFFFF?text=Earth+Science+Geology" alt="Earth Science and Geology Art">
-            <p class="section-footer">Geology has provided vital information about the Earth’s past, helping us to predict future geological events such as earthquakes and volcanic eruptions.</p>
-        </div>
-
-        <!-- Technology and AI Page -->
-        <div id="technology" class="page technology">
-            <h2 class="section-header">Technology & Artificial Intelligence</h2>
-            <p class="section-content">Technology is the application of scientific knowledge to develop tools, machines, and systems to solve problems. Artificial Intelligence (AI) is an area of technology that focuses on creating machines that can simulate human intelligence, learning from data and improving over time.</p>
-            <img class="art" src="https://via.placeholder.com/1000x500/4B0082/FFFFFF?text=Technology+AI" alt="Technology and AI Art">
-            <p class="section-footer">AI is transforming industries such as healthcare, finance, and transportation, offering new possibilities for innovation.</p>
-        </div>
+        <div class="tafsir" id="tafsirText">Tafsir (Explanation) will appear here</div>
     </div>
 
-    <!-- Footer Section -->
-    <footer>
-        <p>&copy; 2025 Science Exploration. All rights reserved.</p>
-    </footer>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // JavaScript function to show the selected "page"
-        function showPage(pageId) {
-            // Hide all pages
-            var pages = document.querySelectorAll('.page');
-            pages.forEach(function(page) {
-                page.classList.remove('active');
-            });
+        let quranData = {};  // To store Quran content fetched from the API
+        let currentChapter = 1;
+        let currentVerse = 1;
 
-            // Show the selected page
-            var selectedPage = document.getElementById(pageId);
-            selectedPage.classList.add('active');
+        // Fetch chapters (Surah) and load them into the select dropdown
+        function loadChapters() {
+            $.ajax({
+                url: 'https://api.alquran.cloud/v1/surah',
+                method: 'GET',
+                success: function(response) {
+                    let chapters = response.data;
+                    let chapterSelect = $('#chapter');
+                    chapters.forEach((chapter) => {
+                        chapterSelect.append(new Option(chapter.englishName, chapter.number));
+                    });
+                    loadVerses(); // Load verses for the first chapter
+                }
+            });
         }
 
-        // By default, show the space page on load
-        document.addEventListener('DOMContentLoaded', function() {
-            showPage('space');
-        });
+        // Fetch verses based on the selected chapter
+        function loadVerses() {
+            currentChapter = $('#chapter').val();
+            $.ajax({
+                url: `https://api.alquran.cloud/v1/ayah/${currentChapter}/1`,  // Fetch 1st verse
+                method: 'GET',
+                success: function(response) {
+                    let verseCount = response.data.verses.length;
+                    let verseSelect = $('#verse');
+                    verseSelect.empty();
+                    for (let i = 1; i <= verseCount; i++) {
+                        verseSelect.append(new Option(i, i));
+                    }
+                    loadVerse(); // Load the selected verse
+                }
+            });
+        }
+
+        // Fetch the selected verse, its translation, and tafsir
+        function loadVerse() {
+            currentVerse = $('#verse').val();
+            $.ajax({
+                url: `https://api.alquran.cloud/v1/ayah/${currentChapter}/${currentVerse}`,
+                method: 'GET',
+                success: function(response) {
+                    let verseData = response.data;
+                    $('#verseText').text(verseData.text);
+                    $('#translationText').text(verseData.translation.en);
+
+                    // Fetch tafsir for the selected verse
+                    fetchTafsir();
+
+                    // Load audio recitation
+                    loadAudio(verseData.number);
+                }
+            });
+        }
+
+        // Fetch tafsir for the selected verse
+        function fetchTafsir() {
+            $.ajax({
+                url: `https://api.alquran.cloud/v1/tafsir/${currentChapter}/${currentVerse}`,
+                method: 'GET',
+                success: function(response) {
+                    $('#tafsirText').text(response.data.text || "No tafsir available.");
+                }
+            });
+        }
+
+        // Load audio for the selected verse
+        function loadAudio(verseNumber) {
+            const audioUrl = `https://verses.quran.com/${currentChapter}/${verseNumber}.mp3`;
+            $('#audioBtn').off().on('click', function() {
+                const audio = new Audio(audioUrl);
+                audio.play();
+            });
+        }
+
+        // Load initial data
+        loadChapters();
     </script>
 
 </body>
