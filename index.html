@@ -15,7 +15,7 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
-            background-image: url('https://www.example.com/calligraphy-background.jpg'); /* Add a calligraphy background image */
+            background-image: url('https://www.example.com/arabic-calligraphy-background.jpg'); /* Replace with actual image URL */
             background-size: cover;
             background-position: center;
         }
@@ -112,9 +112,12 @@
             errorMessage.style.display = 'none';
             loading.style.display = 'block';
 
-            if (!searchInput) {
+            const halalKeywords = ['Islam', 'Quran', 'Hadith', 'Muslim', 'Halal'];
+            const isHalal = halalKeywords.some(keyword => searchInput.toLowerCase().includes(keyword.toLowerCase()));
+
+            if (!isHalal) {
                 loading.style.display = 'none';
-                errorMessage.textContent = 'Please enter a video URL or title.';
+                errorMessage.textContent = 'So not halal mode';
                 errorMessage.style.display = 'block';
                 return;
             }
