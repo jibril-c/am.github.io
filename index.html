@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,13 +16,15 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
-            background-image: url('https://openclipart.org/detail/263182/gold-shahada-calligraphy'); /* Shahada calligraphy image */
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Shahada.svg/1200px-Shahada.svg.png'); /* Shahada calligraphy image */
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
 
         .container {
-            background: white;
+            background: rgba(255, 255, 255, 0.9); /* Slightly transparent background to show calligraphy */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -42,7 +45,7 @@
             padding: 10px;
             margin: 10px 0;
             border-radius: 4px;
-            border: 1px solid #ccc.
+            border: 1px solid #ccc;
         }
 
         button {
@@ -52,36 +55,37 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 10px.
+            margin-top: 10px;
+            font-size: 1rem;
         }
 
         button:hover {
-            background-color: #45a049.
+            background-color: #45a049;
         }
 
         .loading {
             margin-top: 20px;
             font-size: 1.2rem;
-            color: #888.
+            color: #888;
         }
 
         .video-list {
             margin-top: 20px;
-            text-align: left.
+            text-align: left;
         }
         
         .video-list li {
             list-style: none;
-            margin-bottom: 10px.
+            margin-bottom: 10px;
         }
 
         .video-list a {
             color: #4CAF50;
-            text-decoration: none.
+            text-decoration: none;
         }
 
         .video-list a:hover {
-            text-decoration: underline.
+            text-decoration: underline;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
