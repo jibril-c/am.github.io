@@ -1,134 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Voices of Haram</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Sageo+Script&display=swap" rel="stylesheet">
-    <style>
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-
-        header {
-            background-color: #222;
-            color: white;
-            padding: 1rem 0;
-            text-align: center;
-            /* Added background text styles */
-            background-image: url("https://www.islamiclandmarks.com/wp-content/uploads/2016/01/Masjid-e-Nabwi.jpg"); /* Placeholder image */
-            background-size: cover; /* Cover the entire header */
-            background-position: center; /* Center the image */
-            background-blend-mode: multiply; /* Blend the image with the background color */
-        }
-
-        header h1 {
-            /* Make sure the heading is still visible */
-            color: green;
-            font-size: 2.5rem;
-            font-family: 'SageoScript', cursive;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            background-color: rgba(0, 0, 0, 0.5);
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-        }
-
-        nav {
-            margin-top: 10px;
-        }
-
-        nav a {
-            margin: 0 15px;
-            color: #ccc;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            color: white;
-        }
-
-        section {
-            padding: 3rem 1rem;
-            max-width: 800px;
-            margin: auto;
-        }
-
-        section h2 {
-            color: #222;
-            border-bottom: 2px solid #ccc;
-            padding-bottom: 0.5rem;
-        }
-
-        footer {
-            background-color: #8ac5d1; /* Changed footer background color - blue */
-            color: #fff; /* Changed footer text color to white */
-            text-align: center;
-            padding: 1rem 0;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            background: #eee;
-            padding: 0.75rem;
-            margin: 0.5rem 0;
-            border-radius: 4px;
-        }
-
-        @media (max-width: 600px) {
-            nav a {
-                display: block;
-                margin: 10px 0;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Minshawi Quran Audio Player</title>
+  <style>
+    /* Quran Audio Player Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #fafafa;
+      color: #222;
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 12px 0 6px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+      max-height: 250px;
+      overflow-y: auto;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+    li {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+    }
+    li:hover, li:focus {
+      background: #d0f0f7;
+    }
+    li.selected {
+      background: #bce0ff;
+    }
+    #player-container {
+      margin-top: 25px;
+      padding: 15px;
+      background: #e0f7fa;
+      border-radius: 8px;
+      display: none;
+    }
+    audio {
+      width: 100%;
+    }
+    #nowPlaying {
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    #error {
+      color: red;
+      margin-top: 10px;
+    }
+    button {
+      background: #0288d1;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover:enabled {
+      background: #01579b;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>Voices of Haram</h1>
-        <nav>
-            <a href="#home">Home</a> |
-            <a href=" https://jibril-c.github.io/haram.github.io/" target="_blank">Haram Updates</a> |
-            <a href=" https://jibril-c.github.io/prayertimes.github.io/" target="_blank">Prayer Times</a> |
-            <a href=" https://jibril-c.github.io/announcements.github.io/" target="_blank">Announcements</a> |
-            <a href=" https://jibril-c.github.io/recitation.github.io/" target="_blank">Recitations</a> |
-            <a href=" https://jibril-c.github.io/specilevents.githubio/" target="_blank">Special Events</a> 
-        </nav>
-    </header>
+<h1>Minshawi Quran Audio Player</h1>
 
-    <section id="home">
-        <h2>Welcome</h2>
-        <p>Welcome to Voices of Haram, a space dedicated to sharing the beauty of Quranic recitations, important announcements, and information related to the Haram.</p>
-    </section>
+<label for="searchSurah">Search Surah:</label>
+<input type="search" id="searchSurah" placeholder="Type Surah name..." />
 
-    <section id="recitations">
-        <h2>Recitations</h2>
-        <p>Listen to and experience the soul-stirring recitations of the Holy Quran. We aim to bring you closer to the divine word through high-quality audio and video.</p>
-        <p>
-            For more recitations, please visit:
-            <a href=" https://jibril-c.github.io/recitation.github.io/" target="_blank">Quran Recitations</a>
-        </p>
-        </ul>
-    </section>
-    <footer>
- <a href=" https://jibril-c.github.io/contact.github.io/" target="_blank">Contact Us</a>
+<ul id="surahList"></ul>
 
-        
-        <p>© 2025 Voices of Haram. All rights reserved.</p>
-    </footer>
+<button id="playButton" disabled>Play Selected Surah</button>
+
+<div id="player-container">
+  <div id="nowPlaying"></div>
+  <audio id="audioPlayer" controls></audio>
+  <div id="error"></div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const surahSearch = document.getElementById('searchSurah');
+  const surahList = document.getElementById('surahList');
+  const playButton = document.getElementById('playButton');
+  const playerContainer = document.getElementById('player-container');
+  const nowPlaying = document.getElementById('nowPlaying');
+  const errorDiv = document.getElementById('error');
+  const audioPlayer = document.getElementById('audioPlayer');
+
+  let surahs = [];
+  let selectedSurahId = null;
+  let selectedSurahName = "";
+  let ayahsAudioUrls = [];
+  let currentAyahIndex = 0;
+
+  async function fetchSurahs() {
+    try {
+      const res = await fetch('https://api.alquran.cloud/v1/surah');
+      if (!res.ok) throw new Error('Failed to load surahs');
+      const result = await res.json();
+      surahs = result.data;
+      displaySurahs(surahs);
+    } catch (e) {
+      surahList.innerHTML = `<li>Error loading surahs: ${e.message}</li>`;
+      console.error(e);
+    }
+  }
+
+  function displaySurahs(list) {
+    surahList.innerHTML = '';
+    if (!list.length) {
+      surahList.innerHTML = '<li>No surahs found</li>';
+      return;
+    }
+    list.forEach(surah => {
+      const li = document.createElement('li');
+      li.textContent = `${surah.number}. ${surah.englishName} - ${surah.name}`;
+      li.dataset.surahId = surah.number;
+      li.dataset.surahName = surah.englishName;
+      li.addEventListener('click', () => {
+        document.querySelectorAll('li').forEach(item => item.classList.remove('selected'));
+        li.classList.add('selected');
+        selectedSurahId = surah.number;
+        selectedSurahName = surah.englishName;
+        playButton.disabled = false;
+      });
+      surahList.appendChild(li);
+    });
+    }
+
+  surahSearch.addEventListener('input', () => {
+    const term = surahSearch.value.trim().toLowerCase();
+    const filtered = surahs.filter(surah =>
+      surah.englishName.toLowerCase().includes(term) ||
+      surah.name.toLowerCase().includes(term)
+    );
+    displaySurahs(filtered);
+  });
+
+  async function fetchSurahAudio(surahId) {
+    const url = `https://api.alquran.cloud/v1/surah/${surahId}/ar.minshawi`;
+    try {
+      console.log("Fetching audio from:", url);
+      const res = await fetch(url);
+      if(!res.ok) throw new Error('Audio not found for this Surah');
+      const result = await res.json();
+      if(result.code !== 200 || !result.data || !result.data.ayahs) {
+        throw new Error('Invalid response structure');
+      }
+      return result.data.ayahs.map(ayah => ayah.audio);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  function playNextAyah() {
+    if (currentAyahIndex < ayahsAudioUrls.length) {
+      audioPlayer.src = ayahsAudioUrls[currentAyahIndex];
+      nowPlaying.textContent = `Playing Surah ${selectedSurahName} – Ayah ${currentAyahIndex + 1} of ${ayahsAudioUrls.length}`;
+      audioPlayer.play().catch(err => console.error("Audio play error:", err));
+      currentAyahIndex++;
+    } else {
+      nowPlaying.textContent = `Finished playing Surah ${selectedSurahName}.`;
+    }
+  }
+
+  async function playSurah() {
+    if (!selectedSurahId) {
+      errorDiv.textContent = "Please select a Surah first.";
+      return;
+    }
+    errorDiv.textContent = '';
+    playerContainer.style.display = 'block';
+    nowPlaying.textContent = 'Loading audio...';
+    try {
+      ayahsAudioUrls = await fetchSurahAudio(selectedSurahId);
+      if (!ayahsAudioUrls || ayahsAudioUrls.length === 0) {
+        throw new Error("No audio files available.");
+      }
+      currentAyahIndex = 0;
+      playNextAyah();
+    } catch (e) {
+      errorDiv.textContent = `Error: ${e.message}`;
+      console.error(e);
+      playerContainer.style.display = 'none';
+    }
+  }
+
+  audioPlayer.addEventListener('ended', playNextAyah);
+  playButton.addEventListener('click', playSurah);
+
+  fetchSurahs();
+});
+</script>
 
 </body>
 </html>
-
